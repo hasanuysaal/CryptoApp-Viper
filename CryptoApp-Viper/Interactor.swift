@@ -6,3 +6,20 @@
 //
 
 import Foundation
+
+protocol AnyInteractor {
+    
+    var presenter : AnyPresenter? {get set}
+    
+    func downloadCryptos()
+}
+
+class CryptoInteractor : AnyInteractor {
+    var presenter: AnyPresenter?
+    
+    func downloadCryptos() {
+        
+        
+    }
+    
+}
