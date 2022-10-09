@@ -7,6 +7,15 @@
 
 import Foundation
 
+
+enum NetworkError : Error {
+    
+    case wrongUrl
+    case dataCantGet
+    case dataCantProcess
+    
+}
+
 protocol AnyPresenter {
     
     var router : AnyRouter? {get set}
@@ -18,6 +27,7 @@ protocol AnyPresenter {
 }
 
 class CryptoPresenter : AnyPresenter {
+    
     var router: AnyRouter?
     
     var interactor: AnyInteractor?
@@ -25,6 +35,7 @@ class CryptoPresenter : AnyPresenter {
     var view: AnyView?
     
     func interactorDidDownloadData(result: Result<[Crypto], Error>) {
+       
         switch result{
             case .success(let cryptos):
                 // view.update()
