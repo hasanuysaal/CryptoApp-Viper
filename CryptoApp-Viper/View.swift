@@ -44,20 +44,30 @@ class CryptoView : UIViewController, AnyView, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .white
         tableView.delegate = self
         tableView.dataSource = self
+        
+        view.addSubview(tableView)
+        view.addSubview(messageLabel)
         
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
-        messageLabel.frame = CGRect(x: view.frame.width / 2 - 100, y: view.frame.height/2 - 25, width: 100, height: 50)
+        messageLabel.frame = CGRect(x: view.frame.width / 2 - 100, y: view.frame.height/2 - 25, width: 200, height: 50)
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        var content = cell.defaultContentConfiguration()
+        content.text = cryptos[indexPath.row].currency
+        content.secondaryText = cryptos[indexPath.row].price
+        cell.contentConfiguration = content
+        cell.backgroundColor = .systemGray6
+        return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -76,7 +86,12 @@ class CryptoView : UIViewController, AnyView, UITableViewDelegate, UITableViewDa
     }
     
     func update(with error: String) {
-        
+        DispatchQueue.main.async {
+            self.cryptos = []
+            self.tableView.isHidden = true
+            self.messageLabel.text = error
+            self.messageLabel.isHidden = false
+        }
     }
     
 }
