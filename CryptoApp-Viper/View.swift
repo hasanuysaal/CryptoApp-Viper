@@ -54,7 +54,11 @@ class CryptoView : UIViewController, AnyView, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        //Setting display mode light even if user set the mode dark
+        //overrideUserInterfaceStyle = .light
+        // OR
+        //info.plist set Apperance to Dark or Light
+        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -63,6 +67,27 @@ class CryptoView : UIViewController, AnyView, UITableViewDelegate, UITableViewDa
         view.addSubview(messageLabel)
         
         
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        let uiStyle = traitCollection.userInterfaceStyle
+        
+        if uiStyle == .dark {
+            
+            messageLabel.textColor = .black
+            myView.backgroundColor = .white
+            
+        } else {
+            
+            view.backgroundColor = .white
+            messageLabel.textColor = .white
+            myView.backgroundColor = .black
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+       
         
     }
     
