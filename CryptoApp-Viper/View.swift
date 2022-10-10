@@ -36,9 +36,19 @@ class CryptoView : UIViewController, AnyView, UITableViewDelegate, UITableViewDa
         label.isHidden = false
         label.text = "Downloading ..."
         label.font = UIFont.systemFont(ofSize: 20)
-        label.textColor = .blue
+        label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         return label
+    }()
+    
+    let myView : UIView = {
+        let view = UIView()
+        view.isHidden = false
+        view.backgroundColor = .black
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 15
+        return view
     }()
     
     override func viewDidLoad() {
@@ -49,15 +59,38 @@ class CryptoView : UIViewController, AnyView, UITableViewDelegate, UITableViewDa
         tableView.dataSource = self
         
         view.addSubview(tableView)
+        view.addSubview(myView)
         view.addSubview(messageLabel)
+        
+        
         
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
-        messageLabel.frame = CGRect(x: view.frame.width / 2 - 100, y: view.frame.height/2 - 25, width: 200, height: 50)
         
+        tableView.frame = view.bounds
+        
+        addConstraints()
+    
+    }
+    
+    private func addConstraints(){
+        
+        var constraints = [NSLayoutConstraint]()
+        
+        constraints.append(myView.widthAnchor.constraint(equalToConstant: 300))
+        constraints.append(myView.heightAnchor.constraint(equalToConstant: 50))
+        constraints.append(myView.centerXAnchor.constraint(equalTo: view.centerXAnchor))
+        constraints.append(myView.centerYAnchor.constraint(equalTo: view.centerYAnchor))
+        
+        constraints.append(messageLabel.widthAnchor.constraint(equalTo: myView.widthAnchor, multiplier: 0.5))
+        constraints.append(messageLabel.heightAnchor.constraint(equalTo: myView.heightAnchor, multiplier: 0.5))
+        constraints.append(messageLabel.centerXAnchor.constraint(equalTo: myView.centerXAnchor))
+        constraints.append(messageLabel.centerYAnchor.constraint(equalTo: myView.centerYAnchor))
+        
+        NSLayoutConstraint.activate(constraints)
+    
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -79,6 +112,7 @@ class CryptoView : UIViewController, AnyView, UITableViewDelegate, UITableViewDa
         DispatchQueue.main.async {
             self.cryptos = cryptos
             self.messageLabel.isHidden = true
+            self.myView.isHidden = true
             self.tableView.reloadData()
             self.tableView.isHidden = false
         }
